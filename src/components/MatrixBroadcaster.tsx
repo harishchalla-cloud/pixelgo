@@ -28,13 +28,10 @@ export default function MatrixBroadcaster({
 
   useEffect(() => {
     if (mode !== "streaming" || !isPlaying || chunks.length === 0) return;
-
-    // Flash a new RGB matrix every 200ms (5 FPS for reliability)
     const interval = setInterval(() => {
       drawChunkToCanvas(chunks[currentChunkIndex]);
       setCurrentChunkIndex((prev) => (prev + 1) % totalChunks);
     }, 200);
-
     return () => clearInterval(interval);
   }, [mode, isPlaying, currentChunkIndex, chunks, totalChunks]);
 
@@ -44,13 +41,11 @@ export default function MatrixBroadcaster({
     const ctx = canvas.getContext("2d", { alpha: false });
     if (!ctx) return;
 
-    const gridDim = 32; // 32x32 colored squares
+    const gridDim = 16; // CHANGED TO 16 for much larger, easier-to-read squares!
     const cellSize = canvas.width / gridDim;
 
-    // FIX: Safely extract exact ArrayBuffers to satisfy strict TypeScript Blob rules
     const header = new Uint16Array([chunk.chunkIndex]);
     const ivBuffer = new Uint8Array(chunk.iv).buffer;
-
     const combinedBlob = new Blob([header.buffer, ivBuffer, chunk.data]);
 
     combinedBlob.arrayBuffer().then((buffer) => {
@@ -60,7 +55,7 @@ export default function MatrixBroadcaster({
       let colorPointer = 0;
       for (let row = 0; row < gridDim; row++) {
         for (let col = 0; col < gridDim; col++) {
-          const colorIdx = colorIndices[colorPointer] || 0; // Default to black
+          const colorIdx = colorIndices[colorPointer] || 0;
           ctx.fillStyle = RGB_PALETTE[colorIdx].hex;
           ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
           colorPointer++;
@@ -95,11 +90,9 @@ export default function MatrixBroadcaster({
               Broadcasting Matrix {currentChunkIndex + 1} / {totalChunks}
             </p>
           </div>
-
           <div className="relative p-2 bg-slate-950 border-4 border-slate-800 rounded-xl">
             <canvas ref={canvasRef} width={384} height={384} className="rounded-lg shadow-[0_0_50px_rgba(6,182,212,0.3)]" />
           </div>
-
           <button
             onClick={() => setIsPlaying(!isPlaying)}
             className="px-6 py-2 bg-slate-800 text-white rounded-lg flex items-center gap-2"

@@ -37,9 +37,7 @@ export default function MatrixReceiver({
           videoRef.current.play();
           requestAnimationId = requestAnimationFrame(scanRGBMatrix);
         }
-      } catch (err) {
-        console.error("Camera access denied or unavailable.");
-      }
+      } catch (err) {}
     }
 
     const scanRGBMatrix = async () => {
@@ -58,12 +56,12 @@ export default function MatrixReceiver({
       canvas.height = video.videoHeight;
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-      // Targeting Box logic: Assume the user aligns the square in the center
-      const boxSize = Math.min(canvas.width, canvas.height) * 0.6;
+      // CHANGED: Box is 80% of screen now, making alignment much easier!
+      const boxSize = Math.min(canvas.width, canvas.height) * 0.8;
       const startX = (canvas.width - boxSize) / 2;
       const startY = (canvas.height - boxSize) / 2;
 
-      const gridDim = 32;
+      const gridDim = 16; // CHANGED TO 16!
       const cellSize = boxSize / gridDim;
       const scannedIndices: number[] = [];
 
@@ -80,12 +78,9 @@ export default function MatrixReceiver({
 
       try {
         const rawBuffer = colorsToBuffer(scannedIndices);
-
-        // Extract Header (Index)
         const header = new Uint16Array(rawBuffer.slice(0, 2));
         const chunkIndex = header[0];
 
-        // Validation check to see if we grabbed a real frame
         if (chunkIndex >= 0 && chunkIndex < totalChunksExpected) {
           const iv = new Uint8Array(rawBuffer.slice(2, 14));
           const data = rawBuffer.slice(14);
@@ -153,7 +148,7 @@ export default function MatrixReceiver({
         <canvas ref={canvasRef} className="hidden" />
 
         {!isCompleted && (
-          <div className="absolute inset-0 m-auto w-[60%] h-[60%] border-2 border-dashed border-cyan-400 shadow-[0_0_0_9999px_rgba(0,0,0,0.5)] flex items-center justify-center pointer-events-none">
+          <div className="absolute inset-0 m-auto w-[80%] h-[80%] border-2 border-dashed border-cyan-400 shadow-[0_0_0_9999px_rgba(0,0,0,0.5)] flex items-center justify-center pointer-events-none">
             <span className="text-[10px] font-bold text-cyan-400 bg-black/50 px-2 py-1 rounded">ALIGN RGB MATRIX HERE</span>
           </div>
         )}
