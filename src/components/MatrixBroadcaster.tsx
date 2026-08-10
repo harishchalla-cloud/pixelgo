@@ -47,9 +47,11 @@ export default function MatrixBroadcaster({
     const gridDim = 32; // 32x32 colored squares
     const cellSize = canvas.width / gridDim;
 
-    // Combine Header (Index), IV (12 bytes), and Data for the frame
+    // FIX: Safely extract exact ArrayBuffers to satisfy strict TypeScript Blob rules
     const header = new Uint16Array([chunk.chunkIndex]);
-    const combinedBlob = new Blob([header, chunk.iv, chunk.data]);
+    const ivBuffer = new Uint8Array(chunk.iv).buffer;
+
+    const combinedBlob = new Blob([header.buffer, ivBuffer, chunk.data]);
 
     combinedBlob.arrayBuffer().then((buffer) => {
       const colorIndices = bufferToColors(buffer);
