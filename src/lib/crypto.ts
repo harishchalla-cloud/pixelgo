@@ -13,8 +13,7 @@ export interface EncryptedPayload {
   chunks: FileChunk[];
 }
 
-// DROPPED TO 80: Fits perfectly inside a 16x16 RGB grid
-const CHUNK_SIZE = 80;
+const CHUNK_SIZE = 256 * 1024; // 256 KB chunks for high-speed WebRTC
 
 export async function generateSessionKey(): Promise<CryptoKey> {
   return await crypto.subtle.generateKey({ name: "AES-GCM", length: 256 }, true, ["encrypt", "decrypt"]);

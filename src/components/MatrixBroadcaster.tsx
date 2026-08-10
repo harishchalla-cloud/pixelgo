@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { FileChunk } from "@/lib/crypto";
-import { bufferToColors, RGB_PALETTE } from "@/lib/colorMath";
+import { useEffect, useState } from "react";
+import { FileChunk, arrayBufferToBase64 } from "@/lib/crypto";
 import { Play, Pause, ScanLine } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 
@@ -17,88 +16,53 @@ interface BroadcasterProps {
 export default function MatrixBroadcaster({
   chunks, fileName, fileType, totalChunks, encryptionKey,
 }: BroadcasterProps) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [currentChunkIndex, setCurrentChunkIndex] = useState<number>(0);
   const [mode, setMode] = useState<"handshake" | "streaming">("handshake");
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
 
+  // The handshake URL that kicks off the receiver
   const transferUrl = typeof window !== "undefined"
     ? `${window.location.origin}/?key=${encodeURIComponent(encryptionKey)}&chunks=${totalChunks}&type=${encodeURIComponent(fileType)}`
     : "";
 
   useEffect(() => {
     if (mode !== "streaming" || !isPlaying || chunks.length === 0) return;
+
+    // Scan speed: 10 frames per second (very reliable)
     const interval = setInterval(() => {
-      drawChunkToCanvas(chunks[currentChunkIndex]);
       setCurrentChunkIndex((prev) => (prev + 1) % totalChunks);
-    }, 200);
+    }, 100);
+
     return () => clearInterval(interval);
-  }, [mode, isPlaying, currentChunkIndex, chunks, totalChunks]);
+  }, [mode, isPlaying, chunks.length, totalChunks]);
 
-  const drawChunkToCanvas = (chunk: FileChunk) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d", { alpha: false });
-    if (!ctx) return;
-
-    const gridDim = 16; // CHANGED TO 16 for much larger, easier-to-read squares!
-    const cellSize = canvas.width / gridDim;
-
-    const header = new Uint16Array([chunk.chunkIndex]);
-    const ivBuffer = new Uint8Array(chunk.iv).buffer;
-    const combinedBlob = new Blob([header.buffer, ivBuffer, chunk.data]);
-
-    combinedBlob.arrayBuffer().then((buffer) => {
-      const colorIndices = bufferToColors(buffer);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      let colorPointer = 0;
-      for (let row = 0; row < gridDim; row++) {
-        for (let col = 0; col < gridDim; col++) {
-          const colorIdx = colorIndices[colorPointer] || 0;
-          ctx.fillStyle = RGB_PALETTE[colorIdx].hex;
-          ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
-          colorPointer++;
-        }
-      }
+  // Convert chunk data to text payload for QR
+  const getQrPayload = () => {
+    const chunk = chunks[currentChunkIndex];
+    return JSON.stringify({
+      i: chunk.chunkIndex,
+      v: arrayBufferToBase64(chunk.iv),
+      d: arrayBufferToBase64(chunk.data),
     });
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6 flex flex-col items-center">
+    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 flex flex-col items-center">
       {mode === "handshake" ? (
-        <div className="flex flex-col items-center space-y-4">
-          <div className="text-center">
-            <h3 className="font-bold text-xl text-white">Step 1: Connect Device</h3>
-            <p className="text-sm text-slate-400 mt-1">Scan this code with your phone's default camera app.</p>
-          </div>
-          <div className="p-4 bg-white rounded-xl">
-            <QRCodeSVG value={transferUrl} size={250} level="M" />
-          </div>
-          <button
-            onClick={() => setMode("streaming")}
-            className="w-full py-3 mt-4 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2"
-          >
-            <ScanLine className="w-5 h-5" /> Start RGB Engine
-          </button>
+        <div className="text-center space-y-4">
+          <h3 className="font-bold text-xl">1. Scan to Sync</h3>
+          <QRCodeSVG value={transferUrl} size={256} level="L" />
+          <button onClick={() => setMode("streaming")} className="w-full py-3 bg-cyan-500 rounded-xl font-bold">Start Stream</button>
         </div>
       ) : (
-        <div className="flex flex-col items-center space-y-4">
-          <div className="text-center">
-            <h3 className="font-bold text-lg text-white">{fileName}</h3>
-            <p className="text-xs font-mono text-cyan-400">
-              Broadcasting Matrix {currentChunkIndex + 1} / {totalChunks}
-            </p>
+        <div className="text-center space-y-4">
+          <h3 className="font-bold text-lg">{fileName}</h3>
+          <p className="text-cyan-400 font-mono">Chunk {currentChunkIndex + 1} / {totalChunks}</p>
+          <div className="p-4 bg-white rounded-xl">
+             <QRCodeSVG value={getQrPayload()} size={300} level="L" />
           </div>
-          <div className="relative p-2 bg-slate-950 border-4 border-slate-800 rounded-xl">
-            <canvas ref={canvasRef} width={384} height={384} className="rounded-lg shadow-[0_0_50px_rgba(6,182,212,0.3)]" />
-          </div>
-          <button
-            onClick={() => setIsPlaying(!isPlaying)}
-            className="px-6 py-2 bg-slate-800 text-white rounded-lg flex items-center gap-2"
-          >
-            {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-            {isPlaying ? "Pause Engine" : "Resume Engine"}
+          <button onClick={() => setIsPlaying(!isPlaying)} className="px-6 py-2 bg-slate-800 rounded-lg">
+            {isPlaying ? "Pause" : "Play"}
           </button>
         </div>
       )}
