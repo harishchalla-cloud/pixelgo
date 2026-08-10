@@ -55,7 +55,7 @@ export async function encryptAndChunkFile(
     const iv = crypto.getRandomValues(new Uint8Array(12));
 
     const encryptedChunk = await crypto.subtle.encrypt(
-      { name: "AES-GCM", iv },
+      { name: "AES-GCM", iv: iv.buffer },
       key,
       chunkBuffer
     );
@@ -88,8 +88,9 @@ export async function decryptAndReconstructFile(
   const decryptedBuffers: ArrayBuffer[] = [];
 
   for (const chunk of chunks) {
+    const ivBuffer = new Uint8Array(chunk.iv).buffer;
     const decryptedChunk = await crypto.subtle.decrypt(
-      { name: "AES-GCM", iv: chunk.iv },
+      { name: "AES-GCM", iv: ivBuffer },
       key,
       chunk.data
     );
