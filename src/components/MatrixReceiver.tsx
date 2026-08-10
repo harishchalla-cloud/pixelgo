@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Camera, CheckCircle2, RefreshCw } from "lucide-react";
+import { Camera, CheckCircle2, RefreshCw, AlertTriangle } from "lucide-react";
 import { saveChunkToCache, getStoredChunks, clearSessionCache } from "@/lib/storage";
 import { decryptAndReconstructFile, importKeyFromBase64, FileChunk } from "@/lib/crypto";
 
@@ -23,6 +23,7 @@ export default function MatrixReceiver({
   const [receivedChunksCount, setReceivedChunksCount] = useState<number>(0);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
     let stream: MediaStream | null = null;
@@ -37,6 +38,7 @@ export default function MatrixReceiver({
         }
       } catch (err) {
         console.error("Camera access error:", err);
+        setErrorMsg("Failed to access camera.");
       }
     }
 
@@ -48,20 +50,14 @@ export default function MatrixReceiver({
   }, []);
 
   const captureAndDecodeFrame = async () => {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    if (!video || !canvas || isCompleted) return;
+    if (isCompleted) return;
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    // Mock optical decoding step: store simulated received chunk
+    // TODO: This is where we will build the REAL Computer Vision RGB Decoder!
+    // For now, we are still pushing a mock chunk to test the UI flow.
     const dummyChunk: FileChunk = {
       chunkIndex: receivedChunksCount,
       totalChunks: totalChunksExpected,
-      data: new ArrayBuffer(1024),
+      data: new ArrayBuffer(1024), // Fake Data
       iv: crypto.getRandomValues(new Uint8Array(12)),
     };
 
@@ -76,13 +72,21 @@ export default function MatrixReceiver({
   };
 
   const finishFileReconstruction = async () => {
-    const chunks = await getStoredChunks(sessionId, totalChunksExpected);
-    const key = await importKeyFromBase64(base64Key);
-    const reconstructedBlob = await decryptAndReconstructFile(chunks, key, fileType);
+    try {
+      const chunks = await getStoredChunks(sessionId, totalChunksExpected);
+      const key = await importKeyFromBase64(base64Key);
 
-    const url = URL.createObjectURL(reconstructedBlob);
-    setDownloadUrl(url);
-    await clearSessionCache(sessionId);
+      // This will currently fail because the chunks are mock data
+      const reconstructedBlob = await decryptAndReconstructFile(chunks, key, fileType);
+
+      const url = URL.createObjectURL(reconstructedBlob);
+      setDownloadUrl(url);
+    } catch (err) {
+      console.error("Decryption failed:", err);
+      setErrorMsg("Decryption failed. The captured optical data was invalid or corrupted.");
+    } finally {
+      await clearSessionCache(sessionId);
+    }
   };
 
   return (
@@ -97,13 +101,7 @@ export default function MatrixReceiver({
       </div>
 
       <div className="relative overflow-hidden rounded-xl border border-slate-800 bg-black w-[320px] h-[320px]">
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          muted
-          className="w-full h-full object-cover"
-        />
+        <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover" />
         <canvas ref={canvasRef} width={320} height={320} className="hidden" />
       </div>
 
@@ -114,6 +112,15 @@ export default function MatrixReceiver({
         >
           <RefreshCw className="w-4 h-4" /> Scan Optical Frame
         </button>
+      ) : errorMsg ? (
+        <div className="space-y-3 text-center">
+          <div className="text-red-400 font-semibold flex items-center justify-center gap-2">
+            <AlertTriangle className="w-5 h-5" /> {errorMsg}
+          </div>
+          <p className="text-xs text-slate-400">
+            (Expected because we haven't built the real Computer Vision decoder yet!)
+          </p>
+        </div>
       ) : (
         <div className="space-y-3 text-center">
           <div className="text-emerald-400 font-semibold flex items-center justify-center gap-2">
