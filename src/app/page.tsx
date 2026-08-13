@@ -243,14 +243,14 @@ export default function Home() {
         {/* Cinematic Header */}
         <div className="space-y-4 sm:space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-1000">
           <div className="inline-flex items-center justify-center gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-cyan-950/40 text-cyan-300 font-semibold tracking-widest uppercase text-[10px] sm:text-xs border border-cyan-500/30 shadow-[0_0_20px_rgba(6,182,212,0.2)] backdrop-blur-md">
-            <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Military-Grade P2P Encryption
+            <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> AES-256 End-to-End Encryption
           </div>
           <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-cyan-300 via-blue-500 to-purple-600 drop-shadow-[0_0_40px_rgba(6,182,212,0.4)] pb-2">
             PixelGo
           </h1>
           <p className="text-slate-300 text-base sm:text-xl md:text-2xl max-w-2xl mx-auto font-light leading-relaxed px-2">
-            The world's first <span className="text-cyan-400 font-medium drop-shadow-md">zero-server</span> sharing protocol.
-            Transfer files through physical space at lightning speed.
+            Secure, <span className="text-cyan-400 font-medium drop-shadow-md">zero-server</span> file sharing.
+            Stream encrypted payloads directly between devices via WebRTC.
           </p>
         </div>
 
