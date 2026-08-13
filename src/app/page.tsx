@@ -232,88 +232,88 @@ export default function Home() {
   };
 
   return (
-    <main className="relative min-h-screen bg-[#030712] text-white flex flex-col items-center p-6 pt-16 overflow-x-hidden selection:bg-cyan-500/30">
+    <main className="relative min-h-screen bg-[#030712] text-white flex flex-col items-center p-4 sm:p-6 pt-10 sm:pt-16 overflow-x-hidden selection:bg-cyan-500/30">
 
       {/* Deep Space Background gradient & The Encrypted Pixel Matrix */}
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900/40 via-[#030712] to-[#030712] z-0 pointer-events-none" />
       <PixelGoBackground />
 
-      <div className="relative z-10 max-w-5xl w-full text-center space-y-12">
+      <div className="relative z-10 max-w-5xl w-full text-center space-y-8 sm:space-y-12">
 
         {/* Cinematic Header */}
-        <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-1000">
-          <div className="inline-flex items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-cyan-950/40 text-cyan-300 font-semibold tracking-widest uppercase text-xs border border-cyan-500/30 shadow-[0_0_20px_rgba(6,182,212,0.2)] backdrop-blur-md">
-            <Shield className="w-4 h-4" /> Military-Grade P2P Encryption
+        <div className="space-y-4 sm:space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-1000">
+          <div className="inline-flex items-center justify-center gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-cyan-950/40 text-cyan-300 font-semibold tracking-widest uppercase text-[10px] sm:text-xs border border-cyan-500/30 shadow-[0_0_20px_rgba(6,182,212,0.2)] backdrop-blur-md">
+            <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Military-Grade P2P Encryption
           </div>
-          <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-cyan-300 via-blue-500 to-purple-600 drop-shadow-[0_0_40px_rgba(6,182,212,0.4)] pb-2">
+          <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-cyan-300 via-blue-500 to-purple-600 drop-shadow-[0_0_40px_rgba(6,182,212,0.4)] pb-2">
             PixelGo
           </h1>
-          <p className="text-slate-300 text-lg md:text-2xl max-w-2xl mx-auto font-light leading-relaxed">
+          <p className="text-slate-300 text-base sm:text-xl md:text-2xl max-w-2xl mx-auto font-light leading-relaxed px-2">
             The world's first <span className="text-cyan-400 font-medium drop-shadow-md">zero-server</span> sharing protocol.
             Transfer files through physical space at lightning speed.
           </p>
         </div>
 
         {mode === "idle" && (
-          <div className="animate-in fade-in zoom-in-95 duration-1000 delay-150 space-y-12">
+          <div className="animate-in fade-in zoom-in-95 duration-1000 delay-150 space-y-8 sm:space-y-12">
 
-            {/* --- NEW DYNAMIC P2P VISUALIZER --- */}
-            <div className="relative max-w-4xl mx-auto h-72 flex items-center justify-between px-8 md:px-16 bg-slate-900/60 backdrop-blur-2xl rounded-[3rem] border border-cyan-500/20 shadow-[0_0_50px_rgba(6,182,212,0.1)] group overflow-hidden">
+            {/* --- MOBILE-FRIENDLY P2P VISUALIZER --- */}
+            <div className="relative max-w-4xl mx-auto h-56 sm:h-64 md:h-72 flex items-center justify-between px-3 sm:px-10 md:px-16 bg-slate-900/60 backdrop-blur-2xl rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3rem] border border-cyan-500/20 shadow-[0_0_50px_rgba(6,182,212,0.1)] group overflow-hidden">
 
               {/* Internal Grid Pattern (The "Matrix") */}
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.05)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.05)_1px,transparent_1px)] bg-[size:16px_16px] sm:bg-[size:24px_24px] pointer-events-none" />
 
               {/* Left Node (Sender) */}
               <div className="relative flex flex-col items-center z-20">
-                <div className="w-24 h-24 rounded-2xl bg-cyan-950/80 border border-cyan-500/50 flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.4)] group-hover:shadow-[0_0_50px_rgba(6,182,212,0.6)] group-hover:-translate-y-2 transition-all duration-500 backdrop-blur-md">
-                  <Laptop className="w-12 h-12 text-cyan-300 drop-shadow-[0_0_10px_rgba(6,182,212,0.8)]" />
+                <div className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl sm:rounded-2xl bg-cyan-950/80 border border-cyan-500/50 flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.4)] group-hover:shadow-[0_0_50px_rgba(6,182,212,0.6)] transition-all duration-500 backdrop-blur-md">
+                  <Laptop className="w-7 h-7 sm:w-10 sm:h-10 md:w-12 md:h-12 text-cyan-300 drop-shadow-[0_0_10px_rgba(6,182,212,0.8)]" />
                 </div>
-                <div className="mt-4 text-cyan-400 font-mono text-xs uppercase tracking-widest bg-cyan-950/80 px-4 py-1.5 rounded-full border border-cyan-500/30">Sender</div>
+                <div className="mt-2 sm:mt-4 text-cyan-400 font-mono text-[9px] sm:text-xs uppercase tracking-widest bg-cyan-950/80 px-2.5 py-1 sm:px-4 sm:py-1.5 rounded-full border border-cyan-500/30">Sender</div>
               </div>
 
               {/* The Cloud (Top Center - Safely Bypassed) */}
-              <div className="absolute left-1/2 top-6 -translate-x-1/2 flex flex-col items-center z-20">
-                <div className="relative flex items-center justify-center w-14 h-14 rounded-full bg-red-950/40 border border-red-500/30 shadow-[0_0_20px_rgba(239,68,68,0.2)]">
-                  <CloudOff className="w-7 h-7 text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,1)]" />
+              <div className="absolute left-1/2 top-3 sm:top-5 md:top-6 -translate-x-1/2 flex flex-col items-center z-20">
+                <div className="relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-red-950/40 border border-red-500/30 shadow-[0_0_20px_rgba(239,68,68,0.2)]">
+                  <CloudOff className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,1)]" />
                   {/* Red Forcefield Radar Ping */}
                   <div className="absolute inset-0 rounded-full border-2 border-red-500/50 animate-ping opacity-30" />
                 </div>
-                <div className="mt-3 text-red-400 font-mono text-[10px] uppercase tracking-[0.2em] bg-red-950/80 px-3 py-1 rounded-full border border-red-500/30">
+                <div className="mt-1.5 sm:mt-2 md:mt-3 text-red-400 font-mono text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.2em] bg-red-950/80 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full border border-red-500/30">
                   Cloud Bypassed
                 </div>
               </div>
 
               {/* Center Cryptographic Data Tunnel */}
-              <div className="absolute left-32 right-32 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none h-16">
+              <div className="absolute left-16 right-16 sm:left-28 sm:right-28 md:left-32 md:right-32 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none h-12 sm:h-16">
 
                 {/* The Core Laser Line */}
                 <div className="absolute w-full h-px bg-cyan-500/30 border-t-2 border-dashed border-cyan-400/40" />
 
                 {/* Flying Encrypted Pixels (Data Packets) */}
                 <div className="absolute w-full h-full overflow-hidden">
-                  <div className="absolute w-6 h-6 bg-cyan-400/20 border border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.8)] animate-[pixelStream_2.5s_linear_infinite] flex items-center justify-center backdrop-blur-sm">
-                    <div className="w-1.5 h-1.5 bg-white rounded-sm animate-pulse" />
+                  <div className="absolute w-4 h-4 sm:w-6 sm:h-6 bg-cyan-400/20 border border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.8)] animate-[pixelStream_2.5s_linear_infinite] flex items-center justify-center backdrop-blur-sm">
+                    <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-white rounded-sm animate-pulse" />
                   </div>
-                  <div className="absolute w-5 h-5 bg-blue-400/20 border border-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.8)] animate-[pixelStream_2.5s_linear_infinite] flex items-center justify-center backdrop-blur-sm" style={{ animationDelay: '0.8s' }}>
+                  <div className="absolute w-3.5 h-3.5 sm:w-5 sm:h-5 bg-blue-400/20 border border-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.8)] animate-[pixelStream_2.5s_linear_infinite] flex items-center justify-center backdrop-blur-sm" style={{ animationDelay: '0.8s' }}>
                      <div className="w-1 h-1 bg-white rounded-sm animate-pulse" />
                   </div>
-                  <div className="absolute w-8 h-8 bg-teal-400/20 border border-teal-400 shadow-[0_0_20px_rgba(45,212,191,0.8)] animate-[pixelStream_2.5s_linear_infinite] flex items-center justify-center backdrop-blur-sm" style={{ animationDelay: '1.6s' }}>
-                     <div className="w-2 h-2 bg-white rounded-sm animate-pulse" />
+                  <div className="absolute w-5 h-5 sm:w-8 sm:h-8 bg-teal-400/20 border border-teal-400 shadow-[0_0_20px_rgba(45,212,191,0.8)] animate-[pixelStream_2.5s_linear_infinite] flex items-center justify-center backdrop-blur-sm" style={{ animationDelay: '1.6s' }}>
+                     <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-sm animate-pulse" />
                   </div>
                 </div>
 
                 {/* Cryptographic Lock */}
-                <div className="absolute w-12 h-12 bg-slate-900/90 backdrop-blur-xl rounded-xl border border-cyan-500/50 flex items-center justify-center z-10 shadow-[0_0_20px_rgba(6,182,212,0.4)]">
-                   <Lock className="w-5 h-5 text-cyan-400" />
+                <div className="absolute w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-slate-900/90 backdrop-blur-xl rounded-lg sm:rounded-xl border border-cyan-500/50 flex items-center justify-center z-10 shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+                   <Lock className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-cyan-400" />
                 </div>
               </div>
 
               {/* Right Node (Receiver) */}
               <div className="relative flex flex-col items-center z-20">
-                <div className="w-24 h-24 rounded-2xl bg-cyan-950/80 border border-cyan-500/50 flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.4)] group-hover:shadow-[0_0_50px_rgba(6,182,212,0.6)] group-hover:-translate-y-2 transition-all duration-500 backdrop-blur-md">
-                  <Smartphone className="w-10 h-10 text-cyan-300 drop-shadow-[0_0_10px_rgba(6,182,212,0.8)]" />
+                <div className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl sm:rounded-2xl bg-cyan-950/80 border border-cyan-500/50 flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.4)] group-hover:shadow-[0_0_50px_rgba(6,182,212,0.6)] transition-all duration-500 backdrop-blur-md">
+                  <Smartphone className="w-6 h-6 sm:w-9 sm:h-9 md:w-10 md:h-10 text-cyan-300 drop-shadow-[0_0_10px_rgba(6,182,212,0.8)]" />
                 </div>
-                <div className="mt-4 text-cyan-400 font-mono text-xs uppercase tracking-widest bg-cyan-950/80 px-4 py-1.5 rounded-full border border-cyan-500/30">Receiver</div>
+                <div className="mt-2 sm:mt-4 text-cyan-400 font-mono text-[9px] sm:text-xs uppercase tracking-widest bg-cyan-950/80 px-2.5 py-1 sm:px-4 sm:py-1.5 rounded-full border border-cyan-500/30">Receiver</div>
               </div>
 
               <style jsx>{`
@@ -328,13 +328,13 @@ export default function Home() {
             {/* ------------------------------------- */}
 
             {/* Drop & Scan Action Zone */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto">
 
               <label
                 onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
                 onDragLeave={() => setIsDragging(false)}
                 onDrop={handleDrop}
-                className={`relative flex flex-col items-center justify-center p-14 rounded-[3rem] border-2 transition-all cursor-pointer overflow-hidden group backdrop-blur-xl z-20 ${
+                className={`relative flex flex-col items-center justify-center p-8 sm:p-14 rounded-[2rem] sm:rounded-[3rem] border-2 transition-all cursor-pointer overflow-hidden group backdrop-blur-xl z-20 ${
                   isDragging
                     ? "border-cyan-400 bg-cyan-900/20 scale-105 shadow-[0_0_50px_rgba(6,182,212,0.4)]"
                     : "border-white/10 bg-slate-900/50 hover:border-cyan-500/50 hover:bg-slate-900/80 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)]"
@@ -342,23 +342,23 @@ export default function Home() {
               >
                 <input type="file" onChange={handleFileSelect} className="hidden" />
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <UploadCloud className={`w-14 h-14 mb-4 transition-all duration-500 relative z-10 ${isDragging ? "text-cyan-300 scale-125" : "text-slate-300 group-hover:text-cyan-400 group-hover:-translate-y-2"}`} />
-                <h3 className="font-bold text-2xl text-white relative z-10">Initialize Transfer</h3>
+                <UploadCloud className={`w-10 h-10 sm:w-14 sm:h-14 mb-3 sm:mb-4 transition-all duration-500 relative z-10 ${isDragging ? "text-cyan-300 scale-125" : "text-slate-300 group-hover:text-cyan-400 group-hover:-translate-y-2"}`} />
+                <h3 className="font-bold text-xl sm:text-2xl text-white relative z-10">Initialize Transfer</h3>
 
-                <p className="text-sm text-slate-400 mt-2 mb-4 text-center relative z-10">Drag & drop payload here<br/>or click to browse</p>
-                <div className="mt-2 text-[10px] text-cyan-400 font-mono tracking-[0.2em] uppercase relative z-10 bg-cyan-950/80 px-4 py-1.5 rounded-full border border-cyan-500/30">
+                <p className="text-xs sm:text-sm text-slate-400 mt-1 sm:mt-2 mb-3 sm:mb-4 text-center relative z-10">Drag & drop payload here<br/>or click to browse</p>
+                <div className="mt-1 sm:mt-2 text-[9px] sm:text-[10px] text-cyan-400 font-mono tracking-[0.2em] uppercase relative z-10 bg-cyan-950/80 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full border border-cyan-500/30">
                   Infinite Capacity
                 </div>
               </label>
 
               <button
                 onClick={() => setMode("scanning")}
-                className="relative flex flex-col items-center justify-center p-14 rounded-[3rem] border-2 border-solid border-white/10 bg-slate-900/50 backdrop-blur-xl hover:border-blue-500/50 hover:bg-slate-900/80 hover:shadow-[0_0_30px_rgba(59,130,246,0.2)] transition-all group cursor-pointer overflow-hidden z-20"
+                className="relative flex flex-col items-center justify-center p-8 sm:p-14 rounded-[2rem] sm:rounded-[3rem] border-2 border-solid border-white/10 bg-slate-900/50 backdrop-blur-xl hover:border-blue-500/50 hover:bg-slate-900/80 hover:shadow-[0_0_30px_rgba(59,130,246,0.2)] transition-all group cursor-pointer overflow-hidden z-20"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <Camera className="w-14 h-14 text-slate-300 mb-4 group-hover:text-blue-400 transition-all duration-500 group-hover:scale-125 relative z-10" />
-                <h3 className="font-bold text-2xl text-white relative z-10">Scan Handshake</h3>
-                <p className="text-sm text-slate-400 mt-2 text-center relative z-10">Activate camera to establish<br/>secure WebRTC tunnel</p>
+                <Camera className="w-10 h-10 sm:w-14 sm:h-14 text-slate-300 mb-3 sm:mb-4 group-hover:text-blue-400 transition-all duration-500 group-hover:scale-125 relative z-10" />
+                <h3 className="font-bold text-xl sm:text-2xl text-white relative z-10">Scan Handshake</h3>
+                <p className="text-xs sm:text-sm text-slate-400 mt-1 sm:mt-2 text-center relative z-10">Activate camera to establish<br/>secure WebRTC tunnel</p>
               </button>
 
             </div>
